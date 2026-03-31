@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>🥜ィュ占い🥜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'ヒラギノ角ゴシック', sans-serif;
+            background: linear-gradient(135deg, #e8d5c4 0%, #d4c5b0 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #5a4a3a;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #5a4a3a;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: #faf8f5;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(90,74,58,0.1);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-button {
+            width: 100%;
+            padding: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #faf8f5;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .fortune-btn {
+            background: linear-gradient(135deg, #c9a98f 0%, #b89068 100%);
+        }
+
+        .quiz-btn {
+            background: linear-gradient(135deg, #a8c09f 0%, #8fae88 100%);
+        }
+
+        .menu-button:active {
+            transform: scale(0.95);
+        }
+
+        .back-button {
+            padding: 12px 25px;
+            margin-bottom: 20px;
+            background: #a8a090;
+            color: #faf8f5;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .fortune-result {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .fortune-level {
+            font-size: 3em;
+            margin: 20px 0;
+        }
+
+        .fortune-message {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin: 15px 0;
+            color: #6b5b4a;
+        }
+
+        .fortune-advice {
+            background: #f0ede8;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.95em;
+            color: #7a6a5a;
+        }
+
+        .shake-button {
+            width: 100%;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #c9a98f 0%, #b89068 100%);
+            color: #faf8f5;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .shake-button:active {
+            transform: scale(0.95);
+        }
+
+        .quiz-question {
+            margin-bottom: 25px;
+        }
+
+        .quiz-question h3 {
+            margin-bottom: 15px;
+            color: #5a4a3a;
+        }
+
+        .quiz-option {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f0ede8;
+            border: 2px solid #d9d0c5;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 1em;
+            color: #5a4a3a;
+        }
+
+        .quiz-option:hover {
+            background: #e8e0d5;
+            border-color: #c9a98f;
+        }
+
+        .quiz-option.selected {
+            background: #c9a98f;
+            color: #faf8f5;
+            border-color: #b89068;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 18px;
+            margin-top: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #a8c09f 0%, #8fae88 100%);
+            color: #faf8f5;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .submit-button:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .quiz-result {
+            text-align: center;
+        }
+
+        .result-type {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #8fae88;
+        }
+
+        .result-description {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin: 15px 0;
+            color: #6b5b4a;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🥜ィュ占い🥜</h1>
+            <p>暇つぶしに最適!</p>
+        </div>
+
+        <!-- メインメニュー -->
+        <div id="mainMenu" class="card">
+            <button class="menu-button fortune-btn" onclick="showFortune()">
+                🎲 今日の運勢
+            </button>
+            <button class="menu-button quiz-btn" onclick="showQuiz()">
+                🤔 あなたは何系人間?
+            </button>
+        </div>
+
+        <!-- 今日の運勢 -->
+        <div id="fortuneSection" class="card hidden">
+            <button class="back-button" onclick="showMenu()">← 戻る</button>
+            <div class="fortune-result" id="fortuneResult">
+                <p style="font-size: 1.3em; margin-bottom: 20px;">おみくじを引いてね!</p>
+                <button class="shake-button" onclick="drawFortune()">
+                    🎯 運勢を占う
+                </button>
+            </div>
+        </div>
+
+        <!-- 診断クイズ -->
+        <div id="quizSection" class="card hidden">
+            <button class="back-button" onclick="showMenu()">← 戻る</button>
+            <div id="quizQuestions">
+                <div class="quiz-question">
+                    <h3>Q1. 休日の過ごし方は?</h3>
+                    <button class="quiz-option" onclick="selectOption(0, 0)">家でゴロゴロ</button>
+                    <button class="quiz-option" onclick="selectOption(0, 1)">外で活動的に</button>
+                    <button class="quiz-option" onclick="selectOption(0, 2)">友達とワイワイ</button>
+                    <button class="quiz-option" onclick="selectOption(0, 3)">趣味に没頭</button>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Q2. 朝起きて最初にすることは?</h3>
+                    <button class="quiz-option" onclick="selectOption(1, 0)">二度寝する</button>
+                    <button class="quiz-option" onclick="selectOption(1, 1)">スマホチェック</button>
+                    <button class="quiz-option" onclick="selectOption(1, 2)">朝ごはん食べる</button>
+                    <button class="quiz-option" onclick="selectOption(1, 3)">顔を洗う</button>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Q3. ストレス解消法は?</h3>
+                    <button class="quiz-option" onclick="selectOption(2, 0)">寝る</button>
+                    <button class="quiz-option" onclick="selectOption(2, 1)">食べる</button>
+                    <button class="quiz-option" onclick="selectOption(2, 2)">運動する</button>
+                    <button class="quiz-option" onclick="selectOption(2, 3)">誰かと話す</button>
+                </div>
+
+                <button class="submit-button" id="submitQuiz" onclick="showQuizResult()" disabled>
+                    結果を見る
+                </button>
+            </div>
+
+            <div id="quizResult" class="quiz-result hidden">
+                <div class="result-type" id="resultType"></div>
+                <div class="result-description" id="resultDescription"></div>
+                <button class="shake-button" onclick="resetQuiz()">
+                    もう一度診断する
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let quizAnswers = [-1, -1, -1];
+
+        function showMenu() {
+            document.getElementById('mainMenu').classList.remove('hidden');
+            document.getElementById('fortuneSection').classList.add('hidden');
+            document.getElementById('quizSection').classList.add('hidden');
+        }
+
+        function showFortune() {
+            document.getElementById('mainMenu').classList.add('hidden');
+            document.getElementById('fortuneSection').classList.remove('hidden');
+        }
+
+        function showQuiz() {
+            document.getElementById('mainMenu').classList.add('hidden');
+            document.getElementById('quizSection').classList.remove('hidden');
+            resetQuiz();
+        }
+
+        function drawFortune() {
+            const fortunes = [
+                {
+                    level: '大大吉',
+                    emoji: '🌟',
+                    message: '今日のあなたは無敵!でも調子に乗りすぎ注意。',
+                    advice: 'ラッキーアイテム: コンビニのおにぎり'
+                },
+                {
+                    level: '大吉',
+                    emoji: '✨',
+                    message: '良いことありそう!でも油断は禁物だよ。',
+                    advice: 'ラッキーカラー: 昨日着てた服の色'
+                },
+                {
+                    level: '中吉',
+                    emoji: '😊',
+                    message: 'まあまあ普通。でも普通が一番だったりする。',
+                    advice: 'ラッキーフード: 冷蔵庫にある賞味期限ギリギリのやつ'
+                },
+                {
+                    level: '小吉',
+                    emoji: '🙂',
+                    message: '可もなく不可もなく。平和が一番!',
+                    advice: 'ラッキースポット: いつもの場所'
+                },
+                {
+                    level: '吉',
+                    emoji: '👍',
+                    message: '悪くないよ!普通に過ごせば問題なし。',
+                    advice: 'ラッキータイム: お昼寝の時間'
+                },
+                {
+                    level: '末吉',
+                    emoji: '😐',
+                    message: '控えめに生きよう。目立たないのも戦略。',
+                    advice: 'ラッキーアクション: 深呼吸3回'
+                },
+                {
+                    level: '凶',
+                    emoji: '😅',
+                    message: 'ちょっと注意かも。でも明日があるさ!',
+                    advice: 'ラッキーな逃げ道: 早めの就寝'
+                },
+                {
+                    level: '大凶',
+                    emoji: '😱',
+                    message: '今日は家でゴロゴロが正解。無理しないで!',
+                    advice: 'ラッキーアイテム: 布団(逃げ込め)'
+                }
+            ];
+
+            const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            
+            document.getElementById('fortuneResult').innerHTML = `
+                <div class="fortune-level">${fortune.emoji} ${fortune.level}</div>
+                <div class="fortune-message">${fortune.message}</div>
+                <div class="fortune-advice">💡 ${fortune.advice}</div>
+                <button class="shake-button" onclick="drawFortune()">
+                    🔄 もう一回引く
+                </button>
+            `;
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            // Remove all selected classes from this question
+            const questionDiv = document.querySelectorAll('.quiz-question')[questionIndex];
+            questionDiv.querySelectorAll('.quiz-option').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            const options = questionDiv.querySelectorAll('.quiz-option');
+            options[optionIndex].classList.add('selected');
+            
+            // Store answer
+            quizAnswers[questionIndex] = optionIndex;
+            
+            // Enable submit button if all questions answered
+            const allAnswered = quizAnswers.every(answer => answer !== -1);
+            document.getElementById('submitQuiz').disabled = !allAnswered;
+        }
+
+        function showQuizResult() {
+            const sum = quizAnswers.reduce((a, b) => a + b, 0);
+            
+            const results = [
+                {
+                    type: 'ナマケモノ系人間',
+                    description: 'エネルギー温存の達人!動かないことに全力を注ぐタイプ。でも本気出したらすごいはず...たぶん。<br><br><span class="emoji">💤</span> 特技: 二度寝、三度寝、四度寝<br><span class="emoji">🎯</span> 今日のミッション: 布団から出る'
+                },
+                {
+                    type: 'スマホ中毒系人間',
+                    description: '現代人の鏡!スマホがないと生きていけないタイプ。充電が20%切ると不安になる。<br><br><span class="emoji">📱</span> 特技: 片手フリック入力<br><span class="emoji">⚡</span> 今日のミッション: 1時間スマホ断ち'
+                },
+                {
+                    type: '食いしん坊系人間',
+                    description: '人生の8割は食べ物のことを考えてる!胃袋に素直なタイプ。おいしいものは正義。<br><br><span class="emoji">🍜</span> 特技: 食べログ評価を見抜く<br><span class="emoji">🎯</span> 今日のミッション: 間食我慢'
+                },
+                {
+                    type: 'マイペース系人間',
+                    description: '周りに流されない自分流!時間とか常識とかあんまり関係ないタイプ。それでいい。<br><br><span class="emoji">🐢</span> 特技: 急かされても動じない<br><span class="emoji">⏰</span> 今日のミッション: 時間通りに行動'
+                },
+                {
+                    type: '社交的系人間',
+                    description: '一人は寂しい!みんなでワイワイが大好きなタイプ。でもたまには一人の時間も大事よ。<br><br><span class="emoji">🎉</span> 特技: 誰とでも仲良くなれる<br><span class="emoji">🤫</span> 今日のミッション: 1時間一人時間'
+                },
+                {
+                    type: 'こだわり系人間',
+                    description: '自分の世界観を持ってる!趣味に全振りするタイプ。でもたまには現実も見よう。<br><br><span class="emoji">🎨</span> 特技: マニアックな知識<br><span class="emoji">🌍</span> 今日のミッション: 新しいこと1つ試す'
+                }
+            ];
+
+            const resultIndex = Math.min(Math.floor(sum / 2), results.length - 1);
+            const result = results[resultIndex];
+
+            document.getElementById('resultType').textContent = result.type;
+            document.getElementById('resultDescription').innerHTML = result.description;
+            
+            document.getElementById('quizQuestions').classList.add('hidden');
+            document.getElementById('quizResult').classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            quizAnswers = [-1, -1, -1];
+            document.querySelectorAll('.quiz-option').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('submitQuiz').disabled = true;
+            document.getElementById('quizQuestions').classList.remove('hidden');
+            document.getElementById('quizResult').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
